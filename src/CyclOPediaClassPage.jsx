@@ -4,7 +4,7 @@ import { getRandomUser } from "./Utility/api";
 class CyclopediaClassPage extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
+    this.state = JSON.parse(localStorage.getItem("cyclopediaState")) || {
       instructor: undefined,
       studentList: [],
       studentCount: 0,
@@ -14,23 +14,28 @@ class CyclopediaClassPage extends React.Component {
 
   componentDidMount = async () => {
     console.log("Component did mount");
-    const response = await getRandomUser();
-    console.log(response);
-    this.setState((prevState) => {
-      return {
-        instructor: {
-          name: response.data.first_name + " " + response.data.last_name,
-          email: response.data.email,
-          phone: response.data.phone_number,
-          inputName: "",
-          inputFeedback: "",
-        },
-      };
-    });
+    if (JSON.parse(localStorage.getItem("cyclopediaState"))) {
+      this.setState(JSON.parse(localStorage.getItem("cyclopediaState")));
+    } else {
+      const response = await getRandomUser();
+      console.log(response);
+      this.setState((prevState) => {
+        return {
+          instructor: {
+            name: response.data.first_name + " " + response.data.last_name,
+            email: response.data.email,
+            phone: response.data.phone_number,
+            inputName: "",
+            inputFeedback: "",
+          },
+        };
+      });
+    }
   };
 
   componentDidUpdate() {
     console.log("Component did update");
+    localStorage.setItem("cyclopediaState", JSON.stringify(this.state));
   }
 
   componentWillUnmount() {
@@ -82,7 +87,6 @@ class CyclopediaClassPage extends React.Component {
           ></input>
           <br />
           <textarea
-            placeholder="Feedback..."
             value={this.state.inputFeedback}
             placeholder="Give me your best Jojo reference.."
             onChange={(e) => {
