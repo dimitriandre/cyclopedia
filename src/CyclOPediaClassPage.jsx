@@ -35,6 +35,22 @@ class CyclopediaClassPage extends React.Component {
     console.log("Component will unmount");
   }
 
+  handleAddStudent = () => {
+    this.setState((prevState) => {
+      return {
+        studentCount: prevState.studentCount + 1,
+      };
+    });
+  };
+
+  handleRemoveAllStudent = () => {
+    this.setState((prevState) => {
+      return {
+        studentCount: prevState.studentCount + 1,
+      };
+    });
+  };
+
   render() {
     console.log("Render Component");
     return (
@@ -42,7 +58,7 @@ class CyclopediaClassPage extends React.Component {
         {this.state.instructor && (
           <div className="p-3">
             <span className="h4 text-success">Instructor</span>
-            <i class="bi bi-toggle-off btn btn-success btn-sm"></i>
+            <i className="bi bi-toggle-off btn btn-success btn-sm"></i>
             <br />
             Name: {this.state.instructor.name}
             <br />
@@ -51,6 +67,23 @@ class CyclopediaClassPage extends React.Component {
             Phone: {this.state.instructor.phone}
           </div>
         )}
+        <div className="p-3">
+          <span className="h4 text-success">Students</span> <br />
+          <div>Student Count : {this.state.studentCount}</div>
+          <button
+            className="btn btn-success btn-sm"
+            onClick={this.handleAddStudent}
+          >
+            Add Student
+          </button>
+          &nbsp;
+          <button
+            className="btn btn-danger btn-sm"
+            onClick={this.handleRemoveAllStudent}
+          >
+            Remove All Students
+          </button>
+        </div>
       </div>
     );
   }
