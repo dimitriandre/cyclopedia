@@ -22,6 +22,8 @@ class CyclopediaClassPage extends React.Component {
           name: response.data.first_name + " " + response.data.last_name,
           email: response.data.email,
           phone: response.data.phone_number,
+          inputName: "",
+          inputFeedback: "",
         },
       };
     });
@@ -67,6 +69,28 @@ class CyclopediaClassPage extends React.Component {
             Phone: {this.state.instructor.phone}
           </div>
         )}
+        <div className="p-3">
+          <span className="h4 text-success">Feedback</span>
+          <br />
+          <input
+            type="text"
+            value={this.state.inputName}
+            placeholder="Name..."
+            onChange={(e) => {
+              this.setState({ inputName: e.target.value });
+            }}
+          ></input>
+          <br />
+          <textarea
+            placeholder="Feedback..."
+            value={this.state.inputFeedback}
+            placeholder="Give me your best Jojo reference.."
+            onChange={(e) => {
+              this.setState({ inputFeedback: e.target.value });
+            }}
+          ></textarea>{" "}
+          Text area: {this.state.inputFeedback}
+        </div>
         <div className="p-3">
           <span className="h4 text-success">Students</span> <br />
           <div>Student Count : {this.state.studentCount}</div>
