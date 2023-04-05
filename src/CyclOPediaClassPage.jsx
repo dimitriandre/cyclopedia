@@ -1,4 +1,5 @@
 import React from "react";
+import { getRandomUser } from "./Utility/api";
 
 class CyclopediaClassPage extends React.Component {
   constructor(props) {
@@ -11,9 +12,20 @@ class CyclopediaClassPage extends React.Component {
     };
   }
 
-  componentDidMount() {
+  componentDidMount = async () => {
     console.log("Component did mount");
-  }
+    const response = await getRandomUser();
+    console.log(response);
+    this.setState((prevState) => {
+      return {
+        instructor: {
+          name: response.data.first_name + " " + response.data.last_name,
+          email: response.data.email,
+          phone: response.data.phone_number,
+        },
+      };
+    });
+  };
 
   componentDidUpdate() {
     console.log("Component did update");
@@ -25,7 +37,22 @@ class CyclopediaClassPage extends React.Component {
 
   render() {
     console.log("Render Component");
-    return <div>Hello</div>;
+    return (
+      <div>
+        {this.state.instructor && (
+          <div className="p-3">
+            <span className="h4 text-success">Instructor</span>
+            <i class="bi bi-toggle-off btn btn-success btn-sm"></i>
+            <br />
+            Name: {this.state.instructor.name}
+            <br />
+            Email: {this.state.instructor.email}
+            <br />
+            Phone: {this.state.instructor.phone}
+          </div>
+        )}
+      </div>
+    );
   }
 }
 
