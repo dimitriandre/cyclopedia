@@ -10,5 +10,23 @@ class CyclopediaClassPage extends React.Component {
       hideInstructor: false,
     };
   }
-  render() {}
+
+  componentDidMount() {
+    console.log("Component did mount");
+  }
+
+  componentDidUpdate() {
+    console.log("Component did update");
+  }
+
+  componentWillUnmount() {
+    console.log("Component will unmount");
+  }
+
+  render() {
+    console.log("Render Component");
+    return <div>Hello</div>;
+  }
 }
+
+export default CyclopediaClassPage;
