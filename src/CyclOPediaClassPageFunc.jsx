@@ -60,6 +60,32 @@ const CyclopediaClassPageFunc = () => {
     };
   }, []);
 
+  useEffect(() => {
+    const getUser = async () => {
+      const response = await getRandomUser();
+      console.log(response);
+      setState((prevState) => {
+        return {
+          ...prevState,
+          studentList: [
+            ...prevState.studentList,
+            {
+              name: response.data.first_name + " " + response.data.last_name,
+            },
+          ],
+        };
+      });
+    };
+
+    if (state.studentList.length < state.studentCount) {
+      getUser();
+    } else if (state.studentList.length > state.studentCount) {
+      setState((prevState) => {
+        return { ...prevState, studentList: [] };
+      });
+    }
+  }, [state.studentCount]);
+
   // componentDidMount = async () => {
   //   console.log("Component did mount");
   //   if (JSON.parse(localStorage.getItem("cyclopediaState"))) {
