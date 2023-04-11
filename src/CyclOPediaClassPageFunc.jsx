@@ -13,6 +13,7 @@ const CyclopediaClassPageFunc = () => {
   // const [totalRender, setTotalRender] = useState(0);
   const totalRender = useRef(0);
   const prevStudentCount = useRef(-1);
+  const feedbackInputRef = useRef(null);
 
   const [inputName, setInputName] = useState(() => {
     return "";
@@ -123,12 +124,13 @@ const CyclopediaClassPageFunc = () => {
   }, [state.studentCount]);
 
   useEffect(() => {
-    console.log(prevStudentCount.current);
-    console.log(state.studentCount);
     prevStudentCount.current = prevStudentCount.current + 1;
-    console.log(prevStudentCount.current);
-    console.log(state.studentCount);
   }, [state.studentCount]);
+
+  useEffect(() => {
+    feedbackInputRef.current.focus();
+    return () => {};
+  }, []);
 
   // componentDidMount = async () => {
   //   console.log("Component did mount");
@@ -214,6 +216,7 @@ const CyclopediaClassPageFunc = () => {
         <br />
         <textarea
           value={inputFeedback}
+          ref={feedbackInputRef}
           placeholder="Give me your best Jojo reference.."
           onChange={(e) => {
             setInputFeedback(e.target.value);
