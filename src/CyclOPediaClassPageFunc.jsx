@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Instructor from "./InstructorFunc";
 
 const CyclopediaClassPageFunc = () => {
@@ -16,6 +16,27 @@ const CyclopediaClassPageFunc = () => {
   const [inputFeedback, setInputFeedback] = useState(() => {
     return "";
   });
+
+  useEffect(() => {
+    console.log("This will be called on every render");
+  });
+
+  useEffect(() => {
+    console.log("This will only be called on initial/first render/mount");
+  }, []);
+
+  useEffect(() => {
+    console.log(
+      "This will be called on whenever value of hideInstructor changes"
+    );
+  }, [state.hideInstructor]);
+
+  useEffect(() => {
+    console.log("This will only be called on initial/first render/mount");
+    return () => {
+      console.log("This will be called on when component will  be UNMOUNTED");
+    };
+  }, []);
 
   // constructor(props) {
   //   super(props);
