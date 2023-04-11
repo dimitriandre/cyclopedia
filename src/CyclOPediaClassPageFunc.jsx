@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Instructor from "./InstructorFunc";
+import { getRandomUser } from "./Utility/api";
 
 const CyclopediaClassPageFunc = () => {
   const [state, setState] = useState({
@@ -23,6 +24,23 @@ const CyclopediaClassPageFunc = () => {
 
   useEffect(() => {
     console.log("This will only be called on initial/first render/mount");
+    const getUser = async () => {
+      const response = await getRandomUser();
+      console.log(response);
+      setState((prevState) => {
+        return {
+          ...prevState,
+          instructor: {
+            name: response.data.first_name + " " + response.data.last_name,
+            email: response.data.email,
+            phone: response.data.phone_number,
+            inputName: "",
+            inputFeedback: "",
+          },
+        };
+      });
+    };
+    getUser();
   }, []);
 
   useEffect(() => {
