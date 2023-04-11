@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useId } from "react";
 import Instructor from "./InstructorFunc";
 import { getRandomUser } from "./Utility/api";
 
@@ -14,6 +14,7 @@ const CyclopediaClassPageFunc = () => {
   const totalRender = useRef(0);
   const prevStudentCount = useRef(-1);
   const feedbackInputRef = useRef(null);
+  const inputNameId = useId();
 
   const [inputName, setInputName] = useState(() => {
     return "";
@@ -212,7 +213,10 @@ const CyclopediaClassPageFunc = () => {
           onChange={(e) => {
             setInputName(e.target.value);
           }}
-        ></input>
+          id={inputNameId}
+        ></input>{" "}
+        <label htmlFor={inputNameId}> Value: </label>
+        {inputName}
         <br />
         <textarea
           value={inputFeedback}
