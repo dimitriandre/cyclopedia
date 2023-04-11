@@ -18,28 +18,29 @@ const CyclopediaClassPageFunc = () => {
     return "";
   });
 
+  const getUser = async () => {
+    const response = await getRandomUser();
+    console.log(response);
+    setState((prevState) => {
+      return {
+        ...prevState,
+        instructor: {
+          name: response.data.first_name + " " + response.data.last_name,
+          email: response.data.email,
+          phone: response.data.phone_number,
+          inputName: "",
+          inputFeedback: "",
+        },
+      };
+    });
+  };
+
   useEffect(() => {
     console.log("This will be called on every render");
   });
 
   useEffect(() => {
     console.log("This will only be called on initial/first render/mount");
-    const getUser = async () => {
-      const response = await getRandomUser();
-      console.log(response);
-      setState((prevState) => {
-        return {
-          ...prevState,
-          instructor: {
-            name: response.data.first_name + " " + response.data.last_name,
-            email: response.data.email,
-            phone: response.data.phone_number,
-            inputName: "",
-            inputFeedback: "",
-          },
-        };
-      });
-    };
     getUser();
   }, []);
 
@@ -47,6 +48,9 @@ const CyclopediaClassPageFunc = () => {
     console.log(
       "This will be called on whenever value of hideInstructor changes"
     );
+    if (state.hideInstructor) {
+      getUser();
+    }
   }, [state.hideInstructor]);
 
   useEffect(() => {
@@ -55,16 +59,6 @@ const CyclopediaClassPageFunc = () => {
       console.log("This will be called on when component will  be UNMOUNTED");
     };
   }, []);
-
-  // constructor(props) {
-  //   super(props);
-  //   this.state = JSON.parse(localStorage.getItem("cyclopediaState")) || {
-  //     instructor: undefined,
-  //     studentList: [],
-  //     studentCount: 0,
-  //     hideInstructor: false,
-  //   };
-  // }
 
   // componentDidMount = async () => {
   //   console.log("Component did mount");
