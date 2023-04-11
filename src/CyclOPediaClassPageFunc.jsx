@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Instructor from "./InstructorFunc";
 import { getRandomUser } from "./Utility/api";
 
@@ -9,6 +9,10 @@ const CyclopediaClassPageFunc = () => {
     studentCount: 0,
     hideInstructor: false,
   });
+
+  // const [totalRender, setTotalRender] = useState(0);
+  const totalRender = useRef(0);
+  const prevStudentCount = useRef(-1);
 
   const [inputName, setInputName] = useState(() => {
     return "";
@@ -34,6 +38,38 @@ const CyclopediaClassPageFunc = () => {
       };
     });
   };
+
+  const handleAddStudent = () => {
+    setState((prevState) => {
+      return {
+        ...prevState,
+        studentCount: prevState.studentCount + 1,
+      };
+    });
+  };
+
+  const handleRemoveAllStudent = () => {
+    setState((prevState) => {
+      return {
+        ...prevState,
+        studentCount: 0,
+      };
+    });
+  };
+
+  const handleToggleInstructor = () => {
+    setState((prevState) => {
+      return {
+        ...prevState,
+        hideInstructor: !prevState.hideInstructor,
+      };
+    });
+  };
+
+  useEffect(() => {
+    totalRender.current = totalRender.current + 1;
+    console.log("Render " + totalRender.current);
+  });
 
   useEffect(() => {
     console.log("This will be called on every render");
@@ -77,13 +113,21 @@ const CyclopediaClassPageFunc = () => {
       });
     };
 
-    if (state.studentList.length < state.studentCount) {
+    if (prevStudentCount.current < state.studentCount) {
       getUser();
-    } else if (state.studentList.length > state.studentCount) {
+    } else if (prevStudentCount.current > state.studentCount) {
       setState((prevState) => {
         return { ...prevState, studentList: [] };
       });
     }
+  }, [state.studentCount]);
+
+  useEffect(() => {
+    console.log(prevStudentCount.current);
+    console.log(state.studentCount);
+    prevStudentCount.current = prevStudentCount.current + 1;
+    console.log(prevStudentCount.current);
+    console.log(state.studentCount);
   }, [state.studentCount]);
 
   // componentDidMount = async () => {
@@ -138,33 +182,6 @@ const CyclopediaClassPageFunc = () => {
   //   console.log("Component will unmount");
   // }
 
-  const handleAddStudent = () => {
-    setState((prevState) => {
-      return {
-        ...prevState,
-        studentCount: prevState.studentCount + 1,
-      };
-    });
-  };
-
-  const handleRemoveAllStudent = () => {
-    setState((prevState) => {
-      return {
-        ...prevState,
-        studentCount: 0,
-      };
-    });
-  };
-
-  const handleToggleInstructor = () => {
-    setState((prevState) => {
-      return {
-        ...prevState,
-        hideInstructor: !prevState.hideInstructor,
-      };
-    });
-  };
-
   console.log("Render Component");
   return (
     <div>
@@ -204,6 +221,7 @@ const CyclopediaClassPageFunc = () => {
         ></textarea>{" "}
         Text area: {inputFeedback}
       </div>
+      <div className="p-3">Total Render : {totalRender.current}</div>
       <div className="p-3">
         <span className="h4 text-success">Students</span> <br />
         <div>Student Count : {state.studentCount}</div>
